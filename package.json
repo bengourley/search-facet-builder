@@ -2,7 +2,7 @@
   "author": "Ben Gourley",
   "name": "search-facet-builder",
   "description": "Build a faceted search data structure",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "tags": [],
   "repository": {
     "type": "git",
