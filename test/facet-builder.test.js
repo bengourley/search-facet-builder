@@ -10,13 +10,13 @@ describe('facet builder', function () {
 
     it('should generate a data structure containing all facet options', function (done) {
 
-      var facetBuilder = new FacetBuilder({ category: true, location: true })
+      var facetBuilder = new FacetBuilder({ category: true, locations: true })
       fs.createReadStream(__dirname + '/fixtures/objects.json')
         .pipe(jsonStream.parse())
         .pipe(facetBuilder)
         .on('finish', function () {
           var facets = facetBuilder.getFacets()
-            , expected = { category: { Experience: 3, Talk: 3 }, location: { London: 2, Bath: 2, Watford: 2 } }
+            , expected = { category: { Experience: 3, Talk: 3 }, locations: { London: 2, Bath: 2, Watford: 2 } }
           assert.deepEqual(facets, expected)
           done()
         })
@@ -24,11 +24,11 @@ describe('facet builder', function () {
 
     it('should generate a smaller data structure given fewer items', function (done) {
 
-      var facetBuilder = new FacetBuilder({ category: true, location: true })
+      var facetBuilder = new FacetBuilder({ category: true, locations: true })
         , filter = new stream.Transform({ objectMode: true })
 
       filter._transform = function (chunk, encoding, next) {
-        if (chunk.location !== 'Bath') return next()
+        if (!chunk.locations || chunk.locations.indexOf('Bath') === -1) return next()
         return next(null, chunk)
       }
 
@@ -38,7 +38,7 @@ describe('facet builder', function () {
         .pipe(facetBuilder)
         .on('finish', function () {
           var facets = facetBuilder.getFacets()
-            , expected = { category: { Experience: 1, Talk: 1 }, location: { Bath: 2 } }
+            , expected = { category: { Experience: 1, Talk: 1 }, locations: { Bath: 2 } }
           assert.deepEqual(facets, expected)
           done()
         })
@@ -50,7 +50,7 @@ describe('facet builder', function () {
 
     it('should collect the _ids of all items in the stream', function (done) {
 
-      var facetBuilder = new FacetBuilder({ category: true, location: true })
+      var facetBuilder = new FacetBuilder({ category: true, locations: true })
 
       fs.createReadStream(__dirname + '/fixtures/objects.json')
         .pipe(jsonStream.parse())

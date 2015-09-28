@@ -4,6 +4,7 @@ var Writable = require('stream').Writable
 
 function FacetBuilder (facets) {
   Writable.call(this, { objectMode: true })
+  this._facetKeys = facets
   this._facets = {}
   this._resultIds = []
   Object.keys(facets).forEach(function (key) {
@@ -17,8 +18,11 @@ FacetBuilder.prototype._write = function (chunk, enc, cb) {
   this._resultIds.push(chunk._id)
   Object.keys(this._facets).forEach(function (key) {
     if (!chunk[key]) return
-    if (!this._facets[key][chunk[key]]) this._facets[key][chunk[key]] = 0
-    this._facets[key][chunk[key]] += 1
+    var values = Array.isArray(chunk[key]) ? chunk[key] : [ chunk[key] ]
+    values.forEach(function (value) {
+      if (!this._facets[key][value]) this._facets[key][value] = 0
+      this._facets[key][value] += 1
+    }.bind(this))
   }.bind(this))
   cb(null)
 }

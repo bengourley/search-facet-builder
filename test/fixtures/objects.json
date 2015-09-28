@@ -1,7 +1,7 @@
-{ "_id": "001ab", "location": "London", "category": "Experience" }
-{ "_id": "002ab", "location": "London", "category": "Talk" }
-{ "_id": "003ab", "location": "Bath", "category": "Experience" }
-{ "_id": "004ab", "location": "Bath", "category": "Talk" }
-{ "_id": "005ab", "location": "Watford", "category": "Experience" }
-{ "_id": "006ab", "location": "Watford", "category": "Talk" }
+{ "_id": "001ab", "locations": [ "London" ], "category": "Experience" }
+{ "_id": "002ab", "locations": [ "London" ], "category": "Talk" }
+{ "_id": "003ab", "locations": [ "Bath" ], "category": "Experience" }
+{ "_id": "004ab", "locations": [ "Bath" ], "category": "Talk" }
+{ "_id": "005ab", "locations": [ "Watford" ], "category": "Experience" }
+{ "_id": "006ab", "locations": [ "Watford" ], "category": "Talk" }
 { "_id": "007ab" }
