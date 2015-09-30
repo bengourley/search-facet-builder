@@ -44,6 +44,27 @@ describe('facet builder', function () {
         })
     })
 
+    it('should work with a function to extract a range of values from a property', function (done) {
+      var facetBuilder = new FacetBuilder({ category: true, locations: extractLocation })
+
+      function extractLocation (object) {
+        if (!object.tags) return
+        return object.tags
+          .filter(function (tag) { return tag.type === 'Location' })
+          .map(function (tag) { return tag.value })
+      }
+
+      fs.createReadStream(__dirname + '/fixtures/complex-objects.json')
+        .pipe(jsonStream.parse())
+        .pipe(facetBuilder)
+        .on('finish', function () {
+          var facets = facetBuilder.getFacets()
+            , expected = { category: { Experience: 3, Talk: 3 }, locations: { London: 2, Bath: 2, Watford: 2 } }
+          assert.deepEqual(facets, expected)
+          done()
+        })
+    })
+
   })
 
   describe('getResultIds()', function () {
