@@ -1,9 +1,9 @@
 module.exports = FacetBuilder
 
-var Writable = require('stream').Writable
+var Transform = require('stream').Transform
 
 function FacetBuilder (facets) {
-  Writable.call(this, { objectMode: true })
+  Transform.call(this, { objectMode: true })
   this._facetDescriptors = facets
   this._facets = {}
   this._resultIds = []
@@ -12,9 +12,9 @@ function FacetBuilder (facets) {
   }.bind(this))
 }
 
-FacetBuilder.prototype = Object.create(Writable.prototype)
+FacetBuilder.prototype = Object.create(Transform.prototype)
 
-FacetBuilder.prototype._write = function (chunk, enc, cb) {
+FacetBuilder.prototype._transform = function (chunk, enc, cb) {
 
   // Add this object's id to the results
   this._resultIds.push(chunk._id)
@@ -43,7 +43,7 @@ FacetBuilder.prototype._write = function (chunk, enc, cb) {
     }.bind(this))
 
   }.bind(this))
-  cb(null)
+  return cb(null, chunk)
 }
 
 FacetBuilder.prototype.getResultIds = function () {

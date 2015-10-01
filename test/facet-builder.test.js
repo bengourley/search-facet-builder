@@ -87,4 +87,11 @@ describe('facet builder', function () {
 
   })
 
+  it('should be a passthrough stream', function () {
+    var facetBuilder = new FacetBuilder({ category: true, locations: true })
+      , obj = { _id: 'abc', category: 'Test', locations: [ 'here', 'there' ] }
+    facetBuilder.write(obj)
+    assert.equal(facetBuilder.read(), obj)
+  })
+
 })

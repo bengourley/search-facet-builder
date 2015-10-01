@@ -9,7 +9,7 @@ Get a faceted search data structure from some search results.
 ## Usage
 
 ```js
-// FacetStream is a writable stream class
+// FacetStream is a Transform stream class
 var FacetStream = require('search-facet-builder')
     // Get a readStream from somewhere, e.g. a mongo cursor
   , readStream = service.createReadStream(query, options)
